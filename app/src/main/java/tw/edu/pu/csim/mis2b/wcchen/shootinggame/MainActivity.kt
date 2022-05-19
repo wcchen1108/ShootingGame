@@ -15,6 +15,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        img=findViewById(R.id.img)
+        game=findViewById(R.id.game)
 
+        img.setOnClickListener({
+            if (flag){
+                flag = false
+                img.setImageResource(R.drawable.start)
+                job.cancel()
+            }
+            else{
+                flag = true
+                img.setImageResource(R.drawable.stop)
+                job = GlobalScope.launch(Dispatchers.Main) {
+                    while(flag) {
+                        delay(10)
+                        //game.fly.update()
+                        var canvas: Canvas = game.surfaceHolder.lockCanvas()
+                        game.drawSomething(canvas)
+                        game.surfaceHolder.unlockCanvasAndPost(canvas)
+                    }
+                }
+            }
+        })
     }
 }
