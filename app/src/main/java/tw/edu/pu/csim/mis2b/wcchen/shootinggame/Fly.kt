@@ -31,7 +31,7 @@ class Fly(context: Context) {
         canvas.drawBitmap(image, SrcRect, DestRect, null)
     }
 
-    fun update() {
+    fun update(){
         if (fire == 0){
             if (count==1){
                 count = 2
@@ -41,7 +41,18 @@ class Fly(context: Context) {
                 count = 1
                 image = BitmapFactory.decodeResource(res, R.drawable.fly1)
             }
+        }else{
+            when(fire){
+                1 -> image = BitmapFactory.decodeResource(res, R.drawable.shoot1)
+                2 -> image = BitmapFactory.decodeResource(res, R.drawable.shoot2)
+                3 -> image = BitmapFactory.decodeResource(res, R.drawable.shoot3)
+                4 -> image = BitmapFactory.decodeResource(res, R.drawable.shoot4)
+                5 -> image = BitmapFactory.decodeResource(res, R.drawable.shoot5)
+            }
+            fire++
+            if (fire>5){
+                fire = 0
+            }
         }
     }
-
 }
