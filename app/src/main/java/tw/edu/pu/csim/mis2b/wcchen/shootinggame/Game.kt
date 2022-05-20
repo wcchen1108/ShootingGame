@@ -3,19 +3,25 @@ package tw.edu.pu.csim.mis2b.wcchen.shootinggame
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
-class Game(context: Context?, attrs: AttributeSet?) : SurfaceView(context, attrs), SurfaceHolder.Callback {
+class Game(context: Context?, attrs: AttributeSet?) : SurfaceView(context, attrs), SurfaceHolder.Callback, GestureDetector.OnGestureListener {
     var surfaceHolder: SurfaceHolder
     var BG:Bitmap
     var BGmoveX:Int = 0
+    var fly:Fly
+    var gDetector: GestureDetector
+
     init {
         surfaceHolder = getHolder()
         BG = BitmapFactory.decodeResource(getResources(), R.drawable.background)
         surfaceHolder.addCallback(this)
+        fly = Fly(context!!)
+        gDetector = GestureDetector(context, this)
     }
-
 
     override fun surfaceCreated(holder: SurfaceHolder) {
         var canvas: Canvas = surfaceHolder.lockCanvas()
@@ -42,6 +48,8 @@ class Game(context: Context?, attrs: AttributeSet?) : SurfaceView(context, attrs
         paint.color = Color.BLUE
         paint.textSize = 50f
         canvas.drawText("射擊遊戲(作者：陳韋辰)",50f,50f, paint)
+
+        fly.draw(canvas)
     }
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
@@ -50,6 +58,41 @@ class Game(context: Context?, attrs: AttributeSet?) : SurfaceView(context, attrs
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
 
+    }
+
+    override fun onDown(e: MotionEvent?): Boolean {
+        return true
+    }
+
+    override fun onShowPress(e: MotionEvent?) {
+
+    }
+
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        return true
+    }
+
+    override fun onScroll(
+        e1: MotionEvent?,
+        e2: MotionEvent?,
+        distanceX: Float,
+        distanceY: Float
+    ): Boolean {
+        fly.y = e2!!.y.toInt() - fly.h/2
+        return true
+    }
+
+    override fun onLongPress(e: MotionEvent?) {
+
+    }
+
+    override fun onFling(
+        e1: MotionEvent?,
+        e2: MotionEvent?,
+        velocityX: Float,
+        velocityY: Float
+    ): Boolean {
+        return true
     }
 
 }
