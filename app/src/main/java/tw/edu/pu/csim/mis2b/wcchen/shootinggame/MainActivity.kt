@@ -4,19 +4,34 @@ import android.graphics.Canvas
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.module.AppGlideModule
 import kotlinx.coroutines.*
 
+@GlideModule
+public final class MyAppGlideModule : AppGlideModule()
+
 class MainActivity : AppCompatActivity() {
+
     lateinit var img: ImageView
     lateinit var game:Game
     var flag:Boolean = false
     lateinit var job: Job
+    lateinit var me: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        img=findViewById(R.id.img)
-        game=findViewById(R.id.game)
+        img = findViewById(R.id.img)
+        game = findViewById(R.id.game)
+
+        me = findViewById(R.id.me)
+        GlideApp.with(this)
+            //.load(R.drawable.earth)
+            .load(R.drawable.me)
+            .circleCrop()
+            .override(800, 600)
+            .into(me)
 
         img.setOnClickListener({
             if (flag){
@@ -30,7 +45,6 @@ class MainActivity : AppCompatActivity() {
                 job = GlobalScope.launch(Dispatchers.Main) {
                     while(flag) {
                         delay(10)
-                        //game.fly.update()
                         var canvas: Canvas = game.surfaceHolder.lockCanvas()
                         game.drawSomething(canvas)
                         game.surfaceHolder.unlockCanvasAndPost(canvas)
