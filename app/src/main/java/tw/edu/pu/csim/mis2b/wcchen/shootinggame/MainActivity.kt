@@ -32,25 +32,24 @@ class MainActivity : AppCompatActivity() {
             .override(800, 600)
             .into(me)
 
-        img.setOnClickListener({
-            if (flag){
+        img.setOnClickListener {
+            if (flag) {
                 flag = false
                 img.setImageResource(R.drawable.start)
                 job.cancel()
-            }
-            else{
+            } else {
                 flag = true
                 img.setImageResource(R.drawable.stop)
                 job = GlobalScope.launch(Dispatchers.Main) {
-                    while(flag) {
+                    while (flag) {
                         delay(10)
                         game.fly.update()
                         var canvas: Canvas = game.surfaceHolder.lockCanvas()
-                        game.drawSomething(canvas)
+                            game.drawSomething(canvas)
                         game.surfaceHolder.unlockCanvasAndPost(canvas)
                     }
                 }
             }
-        })
+        }
     }
 }

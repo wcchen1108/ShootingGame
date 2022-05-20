@@ -34,14 +34,16 @@ class Game(context: Context?, attrs: AttributeSet?) : SurfaceView(context, attrs
         var w: Int = width
         var h: Int = height
         BGmoveX--
+        var DestRect: Rect = Rect(0, 0, w, h)
         var BGnewX: Int = w + BGmoveX
+
         if (BGnewX <= 0) {
             BGmoveX = 0
             canvas.drawBitmap(BG, BGmoveX.toFloat(), 0f, null)
         } else {
-            var DestRect: Rect = Rect(BGmoveX, 0, BGmoveX + w, h)
+            DestRect = Rect(BGmoveX, 0, BGmoveX+w, h)
             canvas.drawBitmap(BG, SrcRect, DestRect, null)
-            DestRect = Rect(BGnewX, 0, BGnewX + w, h)
+            DestRect = Rect(BGnewX, 0, BGnewX+w, h)
             canvas.drawBitmap(BG, SrcRect, DestRect, null)
         }
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -60,12 +62,19 @@ class Game(context: Context?, attrs: AttributeSet?) : SurfaceView(context, attrs
 
     }
 
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        gDetector.onTouchEvent(event)
+        return true
+    }
+
     override fun onDown(e: MotionEvent?): Boolean {
         return true
     }
 
     override fun onShowPress(e: MotionEvent?) {
-
+        if (e!!.x >= 0 && e!!.x <= fly.w && e!!.y >= fly.y && e!!.y <= fly.y + fly.w) {
+            fly.fire = 1
+        }
     }
 
     override fun onSingleTapUp(e: MotionEvent?): Boolean {
@@ -94,5 +103,4 @@ class Game(context: Context?, attrs: AttributeSet?) : SurfaceView(context, attrs
     ): Boolean {
         return true
     }
-
 }

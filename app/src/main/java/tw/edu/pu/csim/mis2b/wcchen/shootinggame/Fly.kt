@@ -20,7 +20,7 @@ class Fly(context: Context) {
 
     init {
         image = BitmapFactory.decodeResource(res, R.drawable.fly1)
-        SrcRect = Rect(0, 0, image.width, image.height) //裁切
+        SrcRect = Rect(0, 0, image.width, image.height)
         w = image.width/3
         h = image.height/3
         y -= h/2
